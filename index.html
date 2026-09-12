@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>കാടപ്പടി ഡയറക്ടറി</title>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;700&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap');
 
@@ -30,7 +31,7 @@
   header{
     background: var(--leaf-dark);
     color: #F7F3E9;
-    padding: 28px 20px 24px;
+    padding: 24px 20px 20px;
     text-align: center;
     border-bottom: 6px solid var(--turmeric);
   }
@@ -43,10 +44,27 @@
   }
 
   header p{
-    margin: 0;
+    margin: 0 0 14px;
     font-size: 0.95rem;
     color: #D9E8DA;
   }
+
+  .add-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--turmeric);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 10px 20px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+  .add-btn:hover{ background: #B06E10; transform: translateY(-1px); }
+  .add-btn:active{ transform: scale(0.97); }
 
   main{
     max-width: 900px;
@@ -54,8 +72,27 @@
     padding: 24px 16px 60px;
   }
 
-  /* ---- Category grid (home view) ---- */
   #home-view.hidden, #list-view.hidden{ display:none; }
+
+  .status-msg{
+    text-align: center;
+    color: #6B6255;
+    padding: 40px 12px;
+    font-size: 0.98rem;
+  }
+
+  .status-msg button{
+    display:block;
+    margin: 14px auto 0;
+    background: var(--leaf);
+    color:#fff;
+    border:none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
 
   .grid{
     display: grid;
@@ -70,9 +107,9 @@
 
   .cat-btn{
     background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 20px 12px;
+    border: 1px solid rgba(32,48,31,0.06);
+    border-radius: 20px;
+    padding: 22px 12px 18px;
     text-align: center;
     cursor: pointer;
     font-family: inherit;
@@ -82,27 +119,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    transition: transform 0.12s ease, border-color 0.12s ease;
+    gap: 10px;
+    box-shadow: 0 1px 2px rgba(32,48,31,0.05), 0 6px 16px rgba(32,48,31,0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cat-btn .icon-badge{
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(46,106,62,0.12), rgba(199,125,20,0.14));
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cat-btn .emoji{
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     line-height: 1;
   }
 
-  .cat-btn:hover, .cat-btn:focus-visible{
-    border-color: var(--leaf);
-    transform: translateY(-2px);
-    outline: none;
+  .cat-btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(32,48,31,0.06), 0 10px 22px rgba(32,48,31,0.10);
+    border-color: rgba(46,106,62,0.25);
+  }
+
+  .cat-btn:active{
+    transform: scale(0.96);
+    box-shadow: 0 1px 2px rgba(32,48,31,0.06);
+  }
+
+  .cat-btn:focus-visible{
+    outline: 2px solid var(--leaf);
+    outline-offset: 2px;
   }
 
   .cat-btn .count{
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: #6B6255;
+    background: #F2EEE2;
+    padding: 3px 10px;
+    border-radius: 999px;
   }
 
-  /* ---- List view ---- */
   .back-btn{
     background: none;
     border: none;
@@ -121,10 +181,14 @@
     font-family: 'Baloo Chettan 2', sans-serif;
     font-size: 1.5rem;
     color: var(--leaf-dark);
-    margin: 4px 0 18px;
+    margin: 4px 0 14px;
     display:flex;
     align-items:center;
     gap:10px;
+  }
+
+  .list-add-row{
+    margin-bottom: 18px;
   }
 
   .entry-list{
@@ -174,7 +238,7 @@
   .empty-note{
     color: #6B6255;
     font-size: 0.95rem;
-    padding: 20px 4px;
+    padding: 12px 4px 20px;
   }
 
   footer{
@@ -190,19 +254,22 @@
 <header>
   <h1>കാടപ്പടി ഡയറക്ടറി</h1>
   <p>ആവശ്യമുള്ളപ്പോൾ ഒറ്റ ടാപ്പിൽ വിളിക്കൂ</p>
+  <a class="add-btn" id="add-btn-header" href="#" target="_blank" rel="noopener">➕ പുതിയ ആളെ / വിഭാഗം ചേർക്കാൻ</a>
 </header>
 
 <main>
 
-  <!-- HOME VIEW: category buttons -->
   <section id="home-view">
+    <div id="home-status" class="status-msg" style="display:none;"></div>
     <div class="grid" id="category-grid"></div>
   </section>
 
-  <!-- LIST VIEW: entries for one category -->
   <section id="list-view" class="hidden">
     <button class="back-btn" onclick="showHome()">← തിരികെ പോകുക</button>
     <h2 id="list-title"></h2>
+    <div class="list-add-row">
+      <a class="add-btn" id="add-btn-list" href="#" target="_blank" rel="noopener">➕ ഇവിടെ ഒരാളെ ചേർക്കാൻ</a>
+    </div>
     <ul class="entry-list" id="entry-list"></ul>
   </section>
 
@@ -212,70 +279,111 @@
 
 <script>
   // -----------------------------------------------------------------
-  // ഇവിടെയാണ് എല്ലാ ഡാറ്റയും ഉള്ളത്.
-  // ഓരോ വിഭാഗത്തിന്റെയും "entries" ലിസ്റ്റിൽ
-  // { name: "പേര്", phone: "10 അക്ക നമ്പർ", sub: "സ്ഥലം/കുറിപ്പ് (optional)" }
-  // എന്ന ഫോർമാറ്റിൽ പുതിയ എൻട്രികൾ ചേർക്കുകയോ മാറ്റുകയോ ചെയ്യാം.
+  // ക്രമീകരണങ്ങൾ: ഈ രണ്ട് ലിങ്കുകൾ മാത്രമേ ഇവിടെ മാറ്റേണ്ടതുള്ളൂ
   // -----------------------------------------------------------------
-  const categories = [
-    { emoji: "🛺", name: "ഓട്ടോ ഡ്രൈവേഴ്സ്", entries: [
-      { name: "സാമ്പിൾ പേര് 1", phone: "9400000001" },
-      { name: "സാമ്പിൾ പേര് 2", phone: "9400000002" },
-    ]},
-    { emoji: "🩺", name: "ഡോക്ടേഴ്സ്", entries: [
-      { name: "ഡോ. സാമ്പിൾ", phone: "9400000003", sub: "ജനറൽ ഫിസിഷ്യൻ" },
-    ]},
-    { emoji: "🌴", name: "തെങ്ങുകയറ്റക്കാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000004" },
-    ]},
-    { emoji: "📚", name: "ടീച്ചേഴ്സ്", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000005", sub: "ട്യൂഷൻ" },
-    ]},
-    { emoji: "⚕️", name: "ആശാ വർക്കേഴ്സ്", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000006" },
-    ]},
-    { emoji: "🕌", name: "ഉസ്താദുമാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000007" },
-    ]},
-    { emoji: "💡", name: "ഇലക്ട്രീഷ്യൻമാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000008" },
-    ]},
-    { emoji: "🧱", name: "പടവുകാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000009" },
-    ]},
-    { emoji: "🏗️", name: "സെന്റിംഗുകാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000010" },
-    ]},
-    { emoji: "🧰", name: "തേപ്പുകാർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000011" },
-    ]},
-    { emoji: "🚕", name: "ടാക്സി ഡ്രൈവേഴ്സ്", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000012" },
-    ]},
-    { emoji: "🏫", name: "സ്കൂളുകൾ", entries: [
-      { name: "സാമ്പിൾ സ്കൂൾ", phone: "9400000013" },
-    ]},
-    { emoji: "🏥", name: "ഹോസ്പിറ്റൽ", entries: [
-      { name: "സാമ്പിൾ ഹോസ്പിറ്റൽ", phone: "9400000014" },
-    ]},
-    { emoji: "🏛️", name: "ഗവൺമെന്റ് ഉദ്യോഗസ്ഥർ", entries: [
-      { name: "സാമ്പിൾ പേര്", phone: "9400000015", sub: "വില്ലേജ് ഓഫീസ്" },
-    ]},
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMQ2sLDvb-INwG_wqaYc2K2WVUYv9hHzRFXp-7m4iCIJv6pKFo2lZ3uf11x17XTs47aBTKWnq1Q-OT/pub?output=csv";
+  const FORM_URL = "https://forms.gle/oE7VT32eMJoDBTJW8";
+
+  document.getElementById('add-btn-header').href = FORM_URL;
+  document.getElementById('add-btn-list').href = FORM_URL;
+
+  // അറിയപ്പെടുന്ന വിഭാഗങ്ങളും അവയുടെ ഐക്കണും (ക്രമവും ഇതേ പോലെ കാണിക്കും)
+  const KNOWN_CATEGORIES = [
+    ["ഉസ്താദുമാർ","🕌"], ["അധ്യാപകർ","📚"], ["വാർഡ് മെമ്പേഴ്സ്","🗳️"],
+    ["ആശാ വർക്കേഴ്സ്","⚕️"], ["ഓട്ടോക്കാർ","🛺"], ["മത്സ്യവും മാംസവും","🐟"],
+    ["പാലുകാരൻ","🥛"], ["സ്റ്റേഷനറി കടകൾ","✏️"], ["ബേക്കറി & ഹോട്ടൽ","🍰"],
+    ["തെങ്ങ് കയറ്റക്കാർ","🌴"], ["മരംമുറിക്കാർ","🪚"], ["പുല്ല് വെട്ടുകാർ","🌾"],
+    ["ട്രാവൽസ്","🚌"], ["മാർബിൾ, ടൈൽ പണി","🀄"], ["ടാക്സി","🚕"],
+    ["ഇലക്ട്രീഷൻ","💡"], ["പ്ലംബേഴ്സ്","🔧"], ["ആശാരിമാർ","🔨"],
+    ["ഡോക്ടേഴ്സ്","🩺"], ["എഞ്ചിനീയേഴ്സ്","📐"], ["വർക് ഷോപ്പ്","🔩"],
+    ["ഖബ്റ് കുഴിക്കുന്നവർ","⛏️"], ["തേപ്പുകാർ","🧰"], ["ബാർബർ","💈"],
+    ["പടവുകാർ","🧱"], ["ഹരിത കർമ്മ സേന","♻️"], ["സന്നദ്ധസേവകർ","🤝"],
+    ["ടെക്സ്റ്റയിൽസ്","🧵"], ["ഫാൻസി","💄"], ["ചുമട്ടുകാർ","📦"],
+    ["ഹോസ്പിറ്റൽ","🏥"], ["ഗവ: സ്ഥാപനങ്ങൾ","🏛️"], ["അക്ഷയ","💻"],
+    ["പെട്രോൾ പമ്പ്","⛽"], ["മെക്കാനിക്ക്","🛠️"], ["കാർ വാഷ്","🚿"],
+    ["ബുക്ക്സ്റ്റാൾ","📖"], ["സൂപ്പർ മാർക്കറ്റ്","🛒"], ["ടൈലർ","✂️"],
+    ["ഡ്രൈ ക്ലീനിംഗ്","👔"], ["ബേങ്ക്","🏦"], ["മറ്റു ഷോപ്പുകൾ","🏪"],
   ];
+  const DEFAULT_EMOJI = "📌";
 
   const grid = document.getElementById('category-grid');
+  const homeStatus = document.getElementById('home-status');
   const homeView = document.getElementById('home-view');
   const listView = document.getElementById('list-view');
   const listTitle = document.getElementById('list-title');
   const entryList = document.getElementById('entry-list');
 
-  categories.forEach((cat, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'cat-btn';
-    btn.innerHTML = `<span class="emoji">${cat.emoji}</span><span>${cat.name}</span><span class="count">${cat.entries.length} പേർ</span>`;
-    btn.onclick = () => showList(idx);
-    grid.appendChild(btn);
-  });
+  let categories = [];
+
+  function setStatus(html){
+    if(html){
+      homeStatus.style.display = 'block';
+      homeStatus.innerHTML = html;
+      grid.style.display = 'none';
+    } else {
+      homeStatus.style.display = 'none';
+      grid.style.display = 'grid';
+    }
+  }
+
+  function loadData(){
+    setStatus('ഡാറ്റ ലോഡ് ചെയ്യുന്നു...');
+    fetch(CSV_URL + (CSV_URL.includes('?') ? '&' : '?') + 'cachebust=' + Date.now())
+      .then(res => {
+        if(!res.ok) throw new Error('network');
+        return res.text();
+      })
+      .then(text => {
+        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+        const rows = parsed.data.filter(r => (r.Category || '').trim() && (r.Name || '').trim() && (r.Phone || '').trim());
+        buildCategories(rows);
+        renderGrid();
+        setStatus(null);
+      })
+      .catch(() => {
+        setStatus('ഡാറ്റ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ നോക്കി വീണ്ടും ശ്രമിക്കുക.<button onclick="loadData()">വീണ്ടും ശ്രമിക്കുക</button>');
+      });
+  }
+
+  function buildCategories(rows){
+    const byName = {};
+    rows.forEach(r => {
+      const cat = r.Category.trim();
+      if(!byName[cat]) byName[cat] = [];
+      byName[cat].push({
+        name: r.Name.trim(),
+        phone: r.Phone.trim(),
+        sub: (r.Note || '').trim()
+      });
+    });
+
+    categories = [];
+    const seen = new Set();
+
+    KNOWN_CATEGORIES.forEach(([name, emoji]) => {
+      const entries = (byName[name] || []).slice().sort((a,b) => a.name.localeCompare(b.name, 'ml'));
+      categories.push({ name, emoji, entries });
+      seen.add(name);
+    });
+
+    Object.keys(byName).forEach(name => {
+      if(!seen.has(name)){
+        const entries = byName[name].slice().sort((a,b) => a.name.localeCompare(b.name, 'ml'));
+        categories.push({ name, emoji: DEFAULT_EMOJI, entries });
+      }
+    });
+  }
+
+  function renderGrid(){
+    grid.innerHTML = '';
+    categories.forEach((cat, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'cat-btn';
+      btn.innerHTML = `<span class="icon-badge"><span class="emoji">${cat.emoji}</span></span><span>${cat.name}</span><span class="count">${cat.entries.length} പേർ</span>`;
+      btn.onclick = () => showList(idx);
+      grid.appendChild(btn);
+    });
+  }
 
   function showList(idx){
     const cat = categories[idx];
@@ -283,7 +391,7 @@
     entryList.innerHTML = '';
 
     if(cat.entries.length === 0){
-      entryList.innerHTML = '<p class="empty-note">ഇപ്പോൾ ഈ വിഭാഗത്തിൽ നമ്പറുകൾ ചേർത്തിട്ടില്ല.</p>';
+      entryList.innerHTML = '<p class="empty-note">ഇപ്പോൾ ഈ വിഭാഗത്തിൽ നമ്പറുകൾ ചേർത്തിട്ടില്ല. താഴെയുള്ള ബട്ടൺ വഴി ആദ്യത്തെ ആളെ ചേർക്കാം.</p>';
     } else {
       cat.entries.forEach(e => {
         const li = document.createElement('li');
@@ -308,6 +416,8 @@
     listView.classList.add('hidden');
     homeView.classList.remove('hidden');
   }
+
+  loadData();
 </script>
 
 </body>
