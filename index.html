@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>കാടപ്പടി ഡയറക്ടറി</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;700&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #F7F3E9;
+    --ink: #20301F;
+    --leaf: #2E6A3E;
+    --leaf-dark: #204B2C;
+    --turmeric: #C77D14;
+    --card: #FFFFFF;
+    --line: #E1D8C2;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans Malayalam', sans-serif;
+    min-height: 100vh;
+  }
+
+  header{
+    background: var(--leaf-dark);
+    color: #F7F3E9;
+    padding: 28px 20px 24px;
+    text-align: center;
+    border-bottom: 6px solid var(--turmeric);
+  }
+
+  header h1{
+    font-family: 'Baloo Chettan 2', sans-serif;
+    font-size: 1.9rem;
+    margin: 0 0 6px;
+    letter-spacing: 0.5px;
+  }
+
+  header p{
+    margin: 0;
+    font-size: 0.95rem;
+    color: #D9E8DA;
+  }
+
+  main{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* ---- Category grid (home view) ---- */
+  #home-view.hidden, #list-view.hidden{ display:none; }
+
+  .grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  @media (min-width: 620px){
+    .grid{ grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .cat-btn{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.02rem;
+    font-weight: 500;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+  }
+
+  .cat-btn .emoji{
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .cat-btn:hover, .cat-btn:focus-visible{
+    border-color: var(--leaf);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .cat-btn .count{
+    font-size: 0.78rem;
+    color: #6B6255;
+  }
+
+  /* ---- List view ---- */
+  .back-btn{
+    background: none;
+    border: none;
+    color: var(--leaf-dark);
+    font-family: inherit;
+    font-size: 0.98rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-bottom: 6px;
+  }
+
+  .back-btn:hover{ text-decoration: underline; }
+
+  #list-title{
+    font-family: 'Baloo Chettan 2', sans-serif;
+    font-size: 1.5rem;
+    color: var(--leaf-dark);
+    margin: 4px 0 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .entry-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .entry{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .entry .name{
+    font-weight: 500;
+    font-size: 1.02rem;
+  }
+
+  .entry .sub{
+    font-size: 0.82rem;
+    color: #6B6255;
+    margin-top: 2px;
+  }
+
+  .entry a.phone{
+    background: var(--leaf);
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .entry a.phone:hover{ background: var(--leaf-dark); }
+
+  .empty-note{
+    color: #6B6255;
+    font-size: 0.95rem;
+    padding: 20px 4px;
+  }
+
+  footer{
+    text-align:center;
+    padding: 20px;
+    color: #8A8272;
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>കാടപ്പടി ഡയറക്ടറി</h1>
+  <p>ആവശ്യമുള്ളപ്പോൾ ഒറ്റ ടാപ്പിൽ വിളിക്കൂ</p>
+</header>
+
+<main>
+
+  <!-- HOME VIEW: category buttons -->
+  <section id="home-view">
+    <div class="grid" id="category-grid"></div>
+  </section>
+
+  <!-- LIST VIEW: entries for one category -->
+  <section id="list-view" class="hidden">
+    <button class="back-btn" onclick="showHome()">← തിരികെ പോകുക</button>
+    <h2 id="list-title"></h2>
+    <ul class="entry-list" id="entry-list"></ul>
+  </section>
+
+</main>
+
+<footer>കാടപ്പടി പ്രദേശത്തിന് വേണ്ടി ഉണ്ടാക്കിയത്</footer>
+
+<script>
+  // -----------------------------------------------------------------
+  // ഇവിടെയാണ് എല്ലാ ഡാറ്റയും ഉള്ളത്.
+  // ഓരോ വിഭാഗത്തിന്റെയും "entries" ലിസ്റ്റിൽ
+  // { name: "പേര്", phone: "10 അക്ക നമ്പർ", sub: "സ്ഥലം/കുറിപ്പ് (optional)" }
+  // എന്ന ഫോർമാറ്റിൽ പുതിയ എൻട്രികൾ ചേർക്കുകയോ മാറ്റുകയോ ചെയ്യാം.
+  // -----------------------------------------------------------------
+  const categories = [
+    { emoji: "🛺", name: "ഓട്ടോ ഡ്രൈവേഴ്സ്", entries: [
+      { name: "സാമ്പിൾ പേര് 1", phone: "9400000001" },
+      { name: "സാമ്പിൾ പേര് 2", phone: "9400000002" },
+    ]},
+    { emoji: "🩺", name: "ഡോക്ടേഴ്സ്", entries: [
+      { name: "ഡോ. സാമ്പിൾ", phone: "9400000003", sub: "ജനറൽ ഫിസിഷ്യൻ" },
+    ]},
+    { emoji: "🌴", name: "തെങ്ങുകയറ്റക്കാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000004" },
+    ]},
+    { emoji: "📚", name: "ടീച്ചേഴ്സ്", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000005", sub: "ട്യൂഷൻ" },
+    ]},
+    { emoji: "⚕️", name: "ആശാ വർക്കേഴ്സ്", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000006" },
+    ]},
+    { emoji: "🕌", name: "ഉസ്താദുമാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000007" },
+    ]},
+    { emoji: "💡", name: "ഇലക്ട്രീഷ്യൻമാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000008" },
+    ]},
+    { emoji: "🧱", name: "പടവുകാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000009" },
+    ]},
+    { emoji: "🏗️", name: "സെന്റിംഗുകാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000010" },
+    ]},
+    { emoji: "🧰", name: "തേപ്പുകാർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000011" },
+    ]},
+    { emoji: "🚕", name: "ടാക്സി ഡ്രൈവേഴ്സ്", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000012" },
+    ]},
+    { emoji: "🏫", name: "സ്കൂളുകൾ", entries: [
+      { name: "സാമ്പിൾ സ്കൂൾ", phone: "9400000013" },
+    ]},
+    { emoji: "🏥", name: "ഹോസ്പിറ്റൽ", entries: [
+      { name: "സാമ്പിൾ ഹോസ്പിറ്റൽ", phone: "9400000014" },
+    ]},
+    { emoji: "🏛️", name: "ഗവൺമെന്റ് ഉദ്യോഗസ്ഥർ", entries: [
+      { name: "സാമ്പിൾ പേര്", phone: "9400000015", sub: "വില്ലേജ് ഓഫീസ്" },
+    ]},
+  ];
+
+  const grid = document.getElementById('category-grid');
+  const homeView = document.getElementById('home-view');
+  const listView = document.getElementById('list-view');
+  const listTitle = document.getElementById('list-title');
+  const entryList = document.getElementById('entry-list');
+
+  categories.forEach((cat, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn';
+    btn.innerHTML = `<span class="emoji">${cat.emoji}</span><span>${cat.name}</span><span class="count">${cat.entries.length} പേർ</span>`;
+    btn.onclick = () => showList(idx);
+    grid.appendChild(btn);
+  });
+
+  function showList(idx){
+    const cat = categories[idx];
+    listTitle.innerHTML = `<span>${cat.emoji}</span> ${cat.name}`;
+    entryList.innerHTML = '';
+
+    if(cat.entries.length === 0){
+      entryList.innerHTML = '<p class="empty-note">ഇപ്പോൾ ഈ വിഭാഗത്തിൽ നമ്പറുകൾ ചേർത്തിട്ടില്ല.</p>';
+    } else {
+      cat.entries.forEach(e => {
+        const li = document.createElement('li');
+        li.className = 'entry';
+        li.innerHTML = `
+          <div>
+            <div class="name">${e.name}</div>
+            ${e.sub ? `<div class="sub">${e.sub}</div>` : ''}
+          </div>
+          <a class="phone" href="tel:${e.phone}">${e.phone}</a>
+        `;
+        entryList.appendChild(li);
+      });
+    }
+
+    homeView.classList.add('hidden');
+    listView.classList.remove('hidden');
+    window.scrollTo(0,0);
+  }
+
+  function showHome(){
+    listView.classList.add('hidden');
+    homeView.classList.remove('hidden');
+  }
+</script>
+
+</body>
+</html>
