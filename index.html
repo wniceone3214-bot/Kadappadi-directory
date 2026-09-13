@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>കാടപ്പടി ഡയറക്ടറി</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#204B2C">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;700&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap');
@@ -246,7 +250,20 @@
     padding: 20px;
     color: #8A8272;
     font-size: 0.82rem;
+    line-height: 1.6;
   }
+
+  footer .credit-name{
+    font-weight: 600;
+    color: #6B6255;
+  }
+
+  footer a{
+    color: #6B6255;
+    text-decoration: none;
+  }
+
+  footer a:hover{ text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -275,7 +292,12 @@
 
 </main>
 
-<footer>കാടപ്പടി പ്രദേശത്തിന് വേണ്ടി ഉണ്ടാക്കിയത്</footer>
+<footer>
+  കാടപ്പടി പ്രദേശത്തിന് വേണ്ടി ഉണ്ടാക്കിയത്<br>
+  <span class="credit-name">Created by: SYS കാടപ്പടി യൂണിറ്റ്</span><br>
+  Office: Youth Square, Ungungal<br>
+  Phone: <a href="tel:7907805978">7907805978</a>, <a href="tel:8606553713">86065 53713</a>
+</footer>
 
 <script>
   // -----------------------------------------------------------------
@@ -418,6 +440,12 @@
   }
 
   loadData();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
 </script>
 
 </body>
