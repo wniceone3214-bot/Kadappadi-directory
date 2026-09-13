@@ -35,14 +35,25 @@
   header{
     background: var(--leaf-dark);
     color: #F7F3E9;
-    padding: 24px 20px 20px;
+    padding: 0 0 20px;
     text-align: center;
     border-bottom: 6px solid var(--turmeric);
   }
 
+  header .banner{
+    width: 100%;
+    display: block;
+    max-height: 260px;
+    object-fit: cover;
+  }
+
+  header .header-body{
+    padding: 18px 20px 0;
+  }
+
   header h1{
     font-family: 'Baloo Chettan 2', sans-serif;
-    font-size: 1.9rem;
+    font-size: 1.5rem;
     margin: 0 0 6px;
     letter-spacing: 0.5px;
   }
@@ -69,6 +80,85 @@
   }
   .add-btn:hover{ background: #B06E10; transform: translateY(-1px); }
   .add-btn:active{ transform: scale(0.97); }
+
+  .install-btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.14);
+    color: #F7F3E9;
+    border: 1px solid rgba(255,255,255,0.35);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .install-btn:hover{ background: rgba(255,255,255,0.22); }
+
+  .install-panel{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .install-panel.hidden{ display:none; }
+
+  .install-cards{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 16px 0 4px;
+  }
+  @media (min-width: 620px){
+    .install-cards{ grid-template-columns: 1fr 1fr; }
+  }
+
+  .install-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 18px 20px;
+  }
+  .install-card h3{
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    color: var(--leaf-dark);
+  }
+  .install-card ol{
+    margin: 0;
+    padding-left: 20px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .install-card .tag{
+    display:inline-block;
+    font-size: 0.72rem;
+    background: rgba(46,106,62,0.12);
+    color: var(--leaf-dark);
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .install-card .apk-btn{
+    display: inline-block;
+    margin-top: 12px;
+    background: var(--leaf);
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .install-card .apk-btn:hover{ background: var(--leaf-dark); }
+  .install-card .apk-note{
+    font-size: 0.8rem;
+    color: #6B6255;
+    margin-top: 8px;
+  }
 
   main{
     max-width: 900px;
@@ -269,10 +359,41 @@
 <body>
 
 <header>
-  <h1>കാടപ്പടി ഡയറക്ടറി</h1>
-  <p>ആവശ്യമുള്ളപ്പോൾ ഒറ്റ ടാപ്പിൽ വിളിക്കൂ</p>
-  <a class="add-btn" id="add-btn-header" href="#" target="_blank" rel="noopener">➕ പുതിയ ആളെ / വിഭാഗം ചേർക്കാൻ</a>
+  <img class="banner" src="banner.jpg" alt="Kadappadi Directory">
+  <div class="header-body">
+    <h1>കാടപ്പടി ഡയറക്ടറി</h1>
+    <p>ആവശ്യമുള്ളപ്പോൾ ഒറ്റ ടാപ്പിൽ വിളിക്കൂ</p>
+    <a class="add-btn" id="add-btn-header" href="#" target="_blank" rel="noopener">➕ പുതിയ ആളെ / വിഭാഗം ചേർക്കാൻ</a>
+    <br>
+    <button class="install-btn" onclick="toggleInstallPanel()">📲 ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</button>
+  </div>
 </header>
+
+<div class="install-panel hidden" id="install-panel">
+  <div class="install-cards">
+    <div class="install-card">
+      <span class="tag">ശുപാർശ ചെയ്യുന്നത്</span>
+      <h3>⚡ എളുപ്പ വഴി (Add to Home Screen)</h3>
+      <ol>
+        <li>ബ്രൗസറിന്റെ മുകളിൽ വലത് ⋮ (മൂന്ന് ഡോട്ട്) അമർത്തുക</li>
+        <li>"Add to Home screen" സെലക്ട് ചെയ്യുക</li>
+        <li>"Add" അമർത്തുക - ഹോം സ്ക്രീനിൽ ഐക്കൺ വരും</li>
+      </ol>
+      <p class="apk-note">ഇൻസ്റ്റാൾ ചെയ്യാൻ പ്രത്യേക പെർമിഷൻ വേണ്ട, എപ്പോഴും ലേറ്റസ്റ്റ് അപ്ഡേറ്റ് താനേ കിട്ടും.</p>
+    </div>
+    <div class="install-card">
+      <span class="tag">ഇതര വഴി</span>
+      <h3>📦 APK ഫയൽ ഡൗൺലോഡ്</h3>
+      <ol>
+        <li>താഴെയുള്ള ബട്ടൺ അമർത്തി APK ഡൗൺലോഡ് ചെയ്യുക</li>
+        <li>ഡൗൺലോഡ് ആയ ഫയലിൽ ടാപ്പ് ചെയ്യുക</li>
+        <li>"Install anyway" / "Unknown sources allow" ചോദിച്ചാൽ Allow ചെയ്യുക</li>
+      </ol>
+      <a class="apk-btn" id="apk-download-btn" href="#">⬇️ APK ഡൗൺലോഡ്</a>
+      <p class="apk-note">ഇത് Play Store വഴിയല്ല, അതുകൊണ്ട് "Unknown sources" അനുവദിക്കേണ്ടി വരും.</p>
+    </div>
+  </div>
+</div>
 
 <main>
 
@@ -305,9 +426,16 @@
   // -----------------------------------------------------------------
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMQ2sLDvb-INwG_wqaYc2K2WVUYv9hHzRFXp-7m4iCIJv6pKFo2lZ3uf11x17XTs47aBTKWnq1Q-OT/pub?output=csv";
   const FORM_URL = "https://forms.gle/oE7VT32eMJoDBTJW8";
+  // APK ഫയൽ GitHub Release-ൽ അപ്ലോഡ് ചെയ്തതിന് ശേഷം കിട്ടുന്ന ലിങ്ക് ഇവിടെ ഒട്ടിക്കുക
+  const APK_URL = "#";
 
   document.getElementById('add-btn-header').href = FORM_URL;
   document.getElementById('add-btn-list').href = FORM_URL;
+  document.getElementById('apk-download-btn').href = APK_URL;
+
+  function toggleInstallPanel(){
+    document.getElementById('install-panel').classList.toggle('hidden');
+  }
 
   // അറിയപ്പെടുന്ന വിഭാഗങ്ങളും അവയുടെ ഐക്കണും (ക്രമവും ഇതേ പോലെ കാണിക്കും)
   const KNOWN_CATEGORIES = [
