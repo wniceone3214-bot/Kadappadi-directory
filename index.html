@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>കാടപ്പടി ഡയറക്ടറി</title>
+<title>Kadappadi Directory</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#204B2C">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;700&family=Noto+Sans+Malayalam:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;700&family=Noto+Sans+Malayalam:wght@400;500;600&family=Noto+Sans:wght@400;500;600&display=swap');
 
   :root{
     --bg: #F7F3E9;
@@ -28,7 +28,7 @@
     margin:0;
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Noto Sans Malayalam', sans-serif;
+    font-family: 'Noto Sans', 'Noto Sans Malayalam', sans-serif;
     min-height: 100vh;
   }
 
@@ -365,34 +365,34 @@
 <header>
   <img class="banner" src="banner.jpg" alt="Kadappadi Directory">
   <div class="header-body">
-    <a class="add-btn" id="add-btn-header" href="#" target="_blank" rel="noopener">➕ പുതിയ ആളെ / വിഭാഗം ചേർക്കാൻ</a>
+    <a class="add-btn" id="add-btn-header" href="#" target="_blank" rel="noopener">➕ Add New Person / Category</a>
     <br>
-    <button class="install-btn" onclick="toggleInstallPanel()">📲 ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</button>
+    <button class="install-btn" onclick="toggleInstallPanel()">📲 Install App</button>
   </div>
 </header>
 
 <div class="install-panel hidden" id="install-panel">
   <div class="install-cards">
     <div class="install-card">
-      <span class="tag">ശുപാർശ ചെയ്യുന്നത്</span>
-      <h3>⚡ എളുപ്പ വഴി (Add to Home Screen)</h3>
+      <span class="tag">Recommended</span>
+      <h3>⚡ Easy Way (Add to Home Screen)</h3>
       <ol>
-        <li>ബ്രൗസറിന്റെ മുകളിൽ വലത് ⋮ (മൂന്ന് ഡോട്ട്) അമർത്തുക</li>
-        <li>"Add to Home screen" സെലക്ട് ചെയ്യുക</li>
-        <li>"Add" അമർത്തുക - ഹോം സ്ക്രീനിൽ ഐക്കൺ വരും</li>
+        <li>Tap the ⋮ (three dots) menu at the top right of your browser</li>
+        <li>Select "Add to Home screen"</li>
+        <li>Tap "Add" - the icon will appear on your home screen</li>
       </ol>
-      <p class="apk-note">ഇൻസ്റ്റാൾ ചെയ്യാൻ പ്രത്യേക പെർമിഷൻ വേണ്ട, എപ്പോഴും ലേറ്റസ്റ്റ് അപ്ഡേറ്റ് താനേ കിട്ടും.</p>
+      <p class="apk-note">No special permissions needed to install, and you will always get the latest updates automatically.</p>
     </div>
     <div class="install-card">
-      <span class="tag">ഇതര വഴി</span>
-      <h3>📦 APK ഫയൽ ഡൗൺലോഡ്</h3>
+      <span class="tag">Alternative Way</span>
+      <h3>📦 Download APK File</h3>
       <ol>
-        <li>താഴെയുള്ള ബട്ടൺ അമർത്തി APK ഡൗൺലോഡ് ചെയ്യുക</li>
-        <li>ഡൗൺലോഡ് ആയ ഫയലിൽ ടാപ്പ് ചെയ്യുക</li>
-        <li>"Install anyway" / "Unknown sources allow" ചോദിച്ചാൽ Allow ചെയ്യുക</li>
+        <li>Tap the button below to download the APK</li>
+        <li>Tap on the downloaded file</li>
+        <li>Allow "Install anyway" / "Unknown sources" if prompted</li>
       </ol>
-      <a class="apk-btn" id="apk-download-btn" href="#">⬇️ APK ഡൗൺലോഡ്</a>
-      <p class="apk-note">ഇത് Play Store വഴിയല്ല, അതുകൊണ്ട് "Unknown sources" അനുവദിക്കേണ്ടി വരും.</p>
+      <a class="apk-btn" id="apk-download-btn" href="#">⬇️ Download APK</a>
+      <p class="apk-note">This is not from the Play Store, so you may need to allow "Unknown sources".</p>
     </div>
   </div>
 </div>
@@ -405,10 +405,10 @@
   </section>
 
   <section id="list-view" class="hidden">
-    <button class="back-btn" onclick="showHome()">← തിരികെ പോകുക</button>
+    <button class="back-btn" onclick="showHome()">← Go Back</button>
     <h2 id="list-title"></h2>
     <div class="list-add-row">
-      <a class="add-btn" id="add-btn-list" href="#" target="_blank" rel="noopener">➕ ഇവിടെ ഒരാളെ ചേർക്കാൻ</a>
+      <a class="add-btn" id="add-btn-list" href="#" target="_blank" rel="noopener">➕ Add Someone Here</a>
     </div>
     <ul class="entry-list" id="entry-list"></ul>
   </section>
@@ -416,19 +416,18 @@
 </main>
 
 <footer>
-  കാടപ്പടി പ്രദേശത്തിന് വേണ്ടി ഉണ്ടാക്കിയത്<br>
-  <span class="credit-name">Created by: SYS കാടപ്പടി യൂണിറ്റ്</span><br>
+  Created for Kadappadi Locality<br>
+  <span class="credit-name">Created by: SYS Kadappadi Unit</span><br>
   Office: Youth Square, Ungungal<br>
   Phone: <a href="tel:7907805978">7907805978</a>, <a href="tel:8606553713">86065 53713</a>
 </footer>
 
 <script>
   // -----------------------------------------------------------------
-  // ക്രമീകരണങ്ങൾ: ഈ രണ്ട് ലിങ്കുകൾ മാത്രമേ ഇവിടെ മാറ്റേണ്ടതുള്ളൂ
+  // Settings: Update these links as needed
   // -----------------------------------------------------------------
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMQ2sLDvb-INwG_wqaYc2K2WVUYv9hHzRFXp-7m4iCIJv6pKFo2lZ3uf11x17XTs47aBTKWnq1Q-OT/pub?output=csv";
   const FORM_URL = "https://forms.gle/oE7VT32eMJoDBTJW8";
-  // APK ഫയൽ GitHub Release-ൽ അപ്ലോഡ് ചെയ്തതിന് ശേഷം കിട്ടുന്ന ലിങ്ക് ഇവിടെ ഒട്ടിക്കുക
   const APK_URL = "#";
 
   document.getElementById('add-btn-header').href = FORM_URL;
@@ -439,7 +438,7 @@
     document.getElementById('install-panel').classList.toggle('hidden');
   }
 
-  // അറിയപ്പെടുന്ന വിഭാഗങ്ങളും അവയുടെ ഐക്കണും (ക്രമവും ഇതേ പോലെ കാണിക്കും)
+  // വിഭാഗങ്ങളുടെ പേരുകൾ മാറ്റാതെ നിലനിർത്തിയിരിക്കുന്നു
   const KNOWN_CATEGORIES = [
     ["ഉസ്താദുമാർ","🕌"], ["അധ്യാപകർ","📚"], ["വാർഡ് മെമ്പേഴ്സ്","🗳️"],
     ["ആശാ വർക്കേഴ്സ്","⚕️"], ["ഓട്ടോക്കാർ","🛺"], ["മത്സ്യവും മാംസവും","🐟"],
@@ -479,7 +478,7 @@
   }
 
   function loadData(){
-    setStatus('ഡാറ്റ ലോഡ് ചെയ്യുന്നു...');
+    setStatus('Loading data...');
     fetch(CSV_URL + (CSV_URL.includes('?') ? '&' : '?') + 'cachebust=' + Date.now())
       .then(res => {
         if(!res.ok) throw new Error('network');
@@ -493,7 +492,7 @@
         setStatus(null);
       })
       .catch(() => {
-        setStatus('ഡാറ്റ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ നോക്കി വീണ്ടും ശ്രമിക്കുക.<button onclick="loadData()">വീണ്ടും ശ്രമിക്കുക</button>');
+        setStatus('Failed to load data. Please check your internet connection and try again.<button onclick="loadData()">Try Again</button>');
       });
   }
 
@@ -531,7 +530,7 @@
     categories.forEach((cat, idx) => {
       const btn = document.createElement('button');
       btn.className = 'cat-btn';
-      btn.innerHTML = `<span class="icon-badge"><span class="emoji">${cat.emoji}</span></span><span>${cat.name}</span><span class="count">${cat.entries.length} പേർ</span>`;
+      btn.innerHTML = `<span class="icon-badge"><span class="emoji">${cat.emoji}</span></span><span>${cat.name}</span><span class="count">${cat.entries.length} persons</span>`;
       btn.onclick = () => showList(idx);
       grid.appendChild(btn);
     });
@@ -543,7 +542,7 @@
     entryList.innerHTML = '';
 
     if(cat.entries.length === 0){
-      entryList.innerHTML = '<p class="empty-note">ഇപ്പോൾ ഈ വിഭാഗത്തിൽ നമ്പറുകൾ ചേർത്തിട്ടില്ല. താഴെയുള്ള ബട്ടൺ വഴി ആദ്യത്തെ ആളെ ചേർക്കാം.</p>';
+      entryList.innerHTML = '<p class="empty-note">No numbers added to this category yet. You can add the first person using the button below.</p>';
     } else {
       cat.entries.forEach(e => {
         const li = document.createElement('li');
